@@ -1,5 +1,5 @@
 CREATE DATABASE concesionario_ak; -- Sustituye xxx por la iniciales de tu nombre y apellidos
-USE concesionario_;  -- Sustituye xxx por la iniciales de tu nombre y apellidos
+USE concesionario_ak;  -- Sustituye xxx por la iniciales de tu nombre y apellidos
 
 CREATE TABLE T_COCHE (
     identificador INT PRIMARY KEY,
