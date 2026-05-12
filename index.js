@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cocheController = require('./src/ak/controller/cocheController');
+const cocheController = require('./scr/ak/controller/cocheController');
 
 dotenv.config();
 const app = express();
