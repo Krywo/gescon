@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: concesionario_ak
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: concesionario_ak
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./BD-concesionario.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .
+    container_name: gescon_ak
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=concesionario_ak
+    depends_on:
+      - db

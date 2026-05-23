@@ -1,4 +1,3 @@
-
 FROM node:18
 
 WORKDIR /usr/app_aaee_ak
