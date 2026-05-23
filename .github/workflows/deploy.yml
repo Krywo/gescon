@@ -18,5 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /usr/app_aaee_ak
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
+            git clean -fd
             docker compose up --build -d
