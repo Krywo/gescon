@@ -1,24 +1,27 @@
 const cocheRepository = require('../repository/cocheRepository');
 
-const cocheService = {
-    async consultarCochesPorMarca(marca) {
-        // Si no viene marca o es inválida, devolvemos lista vacía [cite: 281]
-        if (!marca) return [];
-        return await cocheRepository.findByMarca(marca);
-    },
-
-    async crearNuevoCoche(coche) {
-        // VALIDACIÓN CRÍTICA: Cilindrada > 0 [cite: 236, 296]
-        if (!coche.cilindrada || coche.cilindrada <= 0) {
-            throw new Error('VALIDATION_ERROR: La cilindrada debe ser mayor que 0');
-        }
-        // Validación de campos obligatorios [cite: 105, 271]
-        if (!coche.identificador || !coche.marca || !coche.modelo) {
-            throw new Error('VALIDATION_ERROR: Faltan campos obligatorios');
-        }
-        
-        return await cocheRepository.save(coche);
-    }
+exports.consultarCoches = (callback) => {
+    cocheRepository.findAll(callback);
 };
 
-module.exports = cocheService;
+exports.crearNuevoCoche = (coche, callback) => {
+    const { identificador, marca, modelo, cilindrada } = coche;
+
+    // 1. Validar campos obligatorios
+    if (!identificador || !marca || !modelo) {
+        return callback(new Error('Error de validación: Campos obligatorios vacíos'));
+    }
+
+    // 2. Validar cilindrada nula
+    if (cilindrada === undefined || cilindrada === null) {
+        return callback(new Error('Error de validación: Cilindrada nula'));
+    }
+
+    // 3. Validar cilindrada <= 0 (Punto 7 del PDF)
+    if (parseInt(cilindrada) <= 0) {
+        return callback(new Error(`Error de validación: Cilindrada inválida (${cilindrada}). Debe ser mayor que 0`));
+    }
+
+    // Si pasa todas las validaciones de negocio, guardamos en la base de datos
+    cocheRepository.save(coche, callback);
+};
